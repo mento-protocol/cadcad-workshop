@@ -11,10 +11,11 @@ The defaults are defined in their respective modules:
 from radcad import Simulation, Experiment, Backend, Model
 from .parts import *
 
-# from model import model
-
-
 model = Model(
+    initial_state={
+        'pokemon_population': 100,
+        'trainer_population': 3000
+    },
     params={
         'pokemon_reproduction_rate': [0.3],
         'pokemon_capture_rate': [0.001],
@@ -23,17 +24,13 @@ model = Model(
         'trainer_growth_rate': [0.0001],
         'dt': [0.1]
     },
-    initial_state={
-        'pokemon_population': 100,
-        'trainer_population': 3000
-    },
     state_update_blocks=[
         {
             # lotka_volterra.py
             'policies': {
                 'grow_pokemon': grow_pokemon,
-                'grow_trainers': grow_trainers,
                 'eliminate_pokemon': eliminate_pokemon,
+                'grow_trainers': grow_trainers,
                 'eliminate_trainers': eliminate_trainers,
             },
             'variables': {
@@ -59,4 +56,4 @@ experiment = Experiment([simulation])
 # simulation.engine = experiment.engine
 experiment.engine.backend = Backend.SINGLE_PROCESS
 experiment.engine.deepcopy = False
-experiment.engine.drop_substeps = True  # Do not store data for substeps
+# experiment.engine.drop_substeps = True  # Do not store data for substeps
