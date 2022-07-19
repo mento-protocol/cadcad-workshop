@@ -7,8 +7,6 @@ from model.data import Event
 from model.system_parameters import SystemParameters
 from model.state_variables import StateVariables
 
-from .policy_aux import *
-from .suf_aux import *
 from .actions import *
 
 def n(v: int) -> float:
@@ -35,22 +33,19 @@ def decode_action(
             state['timestep']
         )
     )
-    signal_input = { 
+    deltas = { 
         'dai_delta': action.dai_delta(state, params),
         'eth_delta': action.eth_delta(state, params),
         'lp_token_delta': action.lp_token_delta(state, params)
     }
     if params['debug']:
         print("[%d] %s" % (state['timestep'], action))
-        print("[%d]    ⍙Dai = %f (%d)" % (state['timestep'], n(signal_input['dai_delta']), signal_input['dai_delta']))
-        print("[%d]    ⍙Eth = %f (%d)" % (state['timestep'], n(signal_input['eth_delta']), signal_input['eth_delta']))
-        print("[%d]    ⍙LP = %f (%d)" % (state['timestep'], n(signal_input['lp_token_delta']), signal_input['lp_token_delta']))
+        print("[%d]    ⍙Dai = %f (%d)" % (state['timestep'], n(deltas['dai_delta']), deltas['dai_delta']))
+        print("[%d]    ⍙Eth = %f (%d)" % (state['timestep'], n(deltas['eth_delta']), deltas['eth_delta']))
+        print("[%d]    ⍙LP = %f (%d)" % (state['timestep'], n(deltas['lp_token_delta']), deltas['lp_token_delta']))
 
+    return deltas
 
-    return signal_input
-
-
-    return  
 def update_dai_balance(
     params: SystemParameters, 
     _substep: int, 
