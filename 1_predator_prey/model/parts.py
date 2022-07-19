@@ -1,17 +1,21 @@
 
 import numpy as np
 
-# ΔP_pokemon / Δt = 𝛼 * P_pokemon - 𝛽 * P_pokemon * P_trainer - ε * P_pokemon
-# ΔP_trainer / Δt = 𝛿 * P_pokemon * P_trainer - 𝛾 * P_trainer
+# ΔPokemon / Δt = 𝛼 * Pokemon - 𝛽 * Pokemon * Trainers - ε * Pokemon
+# ΔTrainers / Δt = 𝛿 * Pokemon * Trainers - 𝛾 * Trainers
+
 # 𝛼 = pokemon reproduction rate
 # 𝛽 = pokemon capture rate
-# 𝛾 = pokemon death rate
-# ε = trainer growth rate 
-# σ = trainer abandon rate
+# ε = pokemon death rate
+# 𝛿 = trainer growth rate 
+# 𝛾 = trainer abandon rate
+
+# ΔPokemon  = (𝛼 * Pokemon - 𝛽 * Pokemon * Trainers - ε * Pokemon) * Δt
+# ΔTrainers = (𝛿 * Pokemon * Trainers - 𝛾 * Trainers) * Δt 
 
 # Behaviors
 def grow_pokemon(params, substep, state_history, prev_state):
-    # ΔPokemon = 
+    # ΔPokemon = 𝛼 * Pokemon * Δt 
     population_delta = (
         prev_state['pokemon_population'] *
         params['pokemon_reproduction_rate'] *
@@ -20,6 +24,7 @@ def grow_pokemon(params, substep, state_history, prev_state):
     return {'pokemon_population_delta': 1} 
 
 def eliminate_pokemon(params, substep, state_history, prev_state):
+    # ΔPokemon = - (𝛽 * Pokemon * Trainers + ε * Pokemon) * Δt  
     population_delta = -1 * (
         ( # natural elimination
             prev_state['pokemon_population'] *
@@ -34,6 +39,7 @@ def eliminate_pokemon(params, substep, state_history, prev_state):
     return {'pokemon_population_delta': population_delta} 
 
 def grow_trainers(params, substep, state_history, prev_state):
+    # ΔTrainers = 𝛿 * Pokemon * Trainers * Δt 
     population_delta = (
         prev_state['trainer_population'] *
         prev_state['pokemon_population'] *
@@ -43,9 +49,10 @@ def grow_trainers(params, substep, state_history, prev_state):
     return {'trainer_population_delta': population_delta} 
 
 def eliminate_trainers(params, substep, state_history, prev_state):
+    # ΔTrainers = - ( 𝛾 * Trainers) * Δt 
     population_delta = -1 * (
-        prev_state['trainer_population'] *
         params['trainer_abandon_rate'] *
+        prev_state['trainer_population'] *
         params['dt']
     )
     return {'trainer_population_delta': population_delta} 
