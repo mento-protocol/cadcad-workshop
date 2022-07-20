@@ -16,51 +16,24 @@ import numpy as np
 
 # Behaviors
 def pokemon_natural_growth(params, substep, state_history, prev_state):
-    # 𝛼 * Pokemon * Δt 
-    population_delta = (
-        prev_state['pokemon_population'] *
-        params['pokemon_reproduction_rate'] *
-        params['dt']
-    )
+    population_delta = 0 # 𝛼 * Pokemon * Δt 
     return {'pokemon_population_delta': population_delta} 
 
 def pokemon_capture(params, substep, state_history, prev_state):
-    # -(𝛽 * Pokemon * Trainers)
-    population_delta = -1 * (
-        prev_state['pokemon_population'] *
-        prev_state['trainer_population'] *
-        params['pokemon_capture_rate'] *
-        params['dt']
-    )
+    population_delta = 0 # -(𝛽 * Pokemon * Trainers)
     return {'pokemon_population_delta': population_delta} 
 
 
 def pokemon_natural_death(params, substep, state_history, prev_state):
-    # -𝛾 * Pokemon * Δt
-    population_delta = -1 * (
-        prev_state['pokemon_population'] *
-        params['pokemon_death_rate'] *
-        params['dt']
-    )
+    population_delta = 0 # -𝛾 * Pokemon * Δt
     return {'pokemon_population_delta': population_delta} 
 
 def trainer_migration(params, substep, state_history, prev_state):
-    #  𝛿 * Pokemon * Trainers * Δt 
-    population_delta = (
-        prev_state['trainer_population'] *
-        prev_state['pokemon_population'] *
-        params['trainer_growth_rate'] *
-        params['dt']
-    )
+    population_delta = 0 #  𝛿 * Pokemon * Trainers * Δt 
     return {'trainer_population_delta': population_delta} 
 
 def trainer_abandon(params, substep, state_history, prev_state):
-    # -ε * Trainers * Δt
-    population_delta = -1 * (
-        params['trainer_abandon_rate'] *
-        prev_state['trainer_population'] *
-        params['dt']
-    )
+    population_delta = 0 # -ε * Trainers * Δt
     return {'trainer_population_delta': population_delta} 
 
 # Mechanisms
