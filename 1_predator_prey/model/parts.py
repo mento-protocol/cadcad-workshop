@@ -26,7 +26,6 @@ def pokemon_natural_growth(params, substep, state_history, prev_state):
 
 def pokemon_capture(params, substep, state_history, prev_state):
     # -(𝛽 * Pokemon * Trainers)
-    population_delta = 0
     population_delta = -1 * (
         prev_state['pokemon_population'] *
         prev_state['trainer_population'] *
@@ -38,7 +37,6 @@ def pokemon_capture(params, substep, state_history, prev_state):
 
 def pokemon_natural_death(params, substep, state_history, prev_state):
     # -𝛾 * Pokemon * Δt
-    population_delta = 0
     population_delta = -1 * (
         prev_state['pokemon_population'] *
         params['pokemon_death_rate'] *
@@ -48,7 +46,6 @@ def pokemon_natural_death(params, substep, state_history, prev_state):
 
 def trainer_migration(params, substep, state_history, prev_state):
     #  𝛿 * Pokemon * Trainers * Δt 
-    population_delta = 1
     population_delta = (
         prev_state['trainer_population'] *
         prev_state['pokemon_population'] *
@@ -59,7 +56,6 @@ def trainer_migration(params, substep, state_history, prev_state):
 
 def trainer_abandon(params, substep, state_history, prev_state):
     # -ε * Trainers * Δt
-    population_delta = 0
     population_delta = -1 * (
         params['trainer_abandon_rate'] *
         prev_state['trainer_population'] *
