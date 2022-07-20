@@ -60,6 +60,21 @@ class SellEth(Action, NamedTuple):
         if self.eth == 0:
             return 0
         
+
+        # ETH_after_fee = ETH * (1 - fee)
+        # ΔDai = ETH_after_fee * Price
+        # Price = B_Dai / (B_Eth + Eth_after_fee)
+        # ΔDai = ETH_after_fee * B_Dai / (B_Eth+ Eth_after_fee)
+
+        # with fee = 0.3% = 3 / 1000 
+        # 1 - fee = 997 / 1000
+        # fee_numerator = 997
+        # fee_denominator = 1000
+        # ΔDai = Eth * 997/1000 * B_Dai / (B_Eth + Eth * 997/1000)
+        # ΔDai = (Eth * 997 * B_Dai) / (B_Eth + Eth * 997/1000) * 1000
+        # ΔDai = (Eth * 997 * B_Dai) / B_Eth * 1000 + Eth * 997
+        # ΔDai = (Eth * fee_numerator * B_Dai) / B_Eth * fee_denominator + Eth * fee_numerator
+        
         sold_with_fee = self.eth * params['fee_numerator']
         numerator = sold_with_fee * state['dai_balance']
         denominator = (
