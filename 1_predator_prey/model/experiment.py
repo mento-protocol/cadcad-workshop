@@ -28,10 +28,11 @@ model = Model(
         {
             # lotka_volterra.py
             'policies': {
-                'grow_pokemon': grow_pokemon,
-                'eliminate_pokemon': eliminate_pokemon,
-                'grow_trainers': grow_trainers,
-                'eliminate_trainers': eliminate_trainers,
+                'pokemon_natural_growth': pokemon_natural_growth,
+                'pokemon_natural_death': pokemon_natural_death,
+                'pokemon_caputre': pokemon_capture,
+                'trainer_migration': trainer_migration,
+                'trainer_abadon': trainer_abandon,
             },
             'variables': {
                 'pokemon_population': pokemon_population,
