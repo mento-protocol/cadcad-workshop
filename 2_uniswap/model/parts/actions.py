@@ -57,37 +57,15 @@ class SellEth(Action, NamedTuple):
         return "SellEth(eth=%f)" % (self.eth / 1e18)
 
     def dai_delta(self, state: StateVariables, params: SystemParameters) -> int:
-        if self.eth == 0:
-            return 0
-        
-
-        # ETH_after_fee = ETH * (1 - fee)
-        # ΔDai = ETH_after_fee * Price
-        # Price = B_Dai / (B_Eth + Eth_after_fee)
-        # ΔDai = ETH_after_fee * B_Dai / (B_Eth+ Eth_after_fee)
-
-        # with fee = 0.3% = 3 / 1000 
-        # 1 - fee = 997 / 1000
-        # fee_numerator = 997
-        # fee_denominator = 1000
-        # ΔDai = Eth * 997/1000 * B_Dai / (B_Eth + Eth * 997/1000)
-        # ΔDai = (Eth * 997 * B_Dai) / (B_Eth + Eth * 997/1000) * 1000
-        # ΔDai = (Eth * 997 * B_Dai) / B_Eth * 1000 + Eth * 997
-        # ΔDai = (Eth * fee_numerator * B_Dai) / B_Eth * fee_denominator + Eth * fee_numerator
-        
-        sold_with_fee = self.eth * params['fee_numerator']
-        numerator = sold_with_fee * state['dai_balance']
-        denominator = (
-            state['eth_balance'] * params['fee_denominator'] + 
-            sold_with_fee
-        )
-        delta = -1 * int(numerator // denominator)                      
-        return delta
+        # Vd = (Ve * Fn * Bd) / (Fd * Be + Ve * Fn)
+        return 0
     
     def eth_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return self.eth
+        # TODO?
+        return 0
 
     def lp_token_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
 class SellToken(Action, NamedTuple):
@@ -97,21 +75,15 @@ class SellToken(Action, NamedTuple):
         return "SellToken(tokens=%f)" % (self.tokens / 1e18)
 
     def dai_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return self.tokens
+        # TODO?
+        return 0
 
     def eth_delta(self, state: StateVariables, params: SystemParameters) -> int:
-        if self.tokens == 0:
-            return 0
-        sold_with_fee = self.tokens * params['fee_numerator']
-        numerator = sold_with_fee * state['eth_balance']
-        denominator = (
-            state['dai_balance'] * params['fee_denominator'] + 
-            sold_with_fee
-        )
-        delta = -1 * int(numerator // denominator)
-        return delta
+        # Ve = (Vd * Fn * Be) / (Fd * Bd + Vd * Fn)
+        return 0
 
     def lp_token_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
         
 
@@ -123,12 +95,15 @@ class Deposit(Action, NamedTuple):
         return "Deposit(eth=%f, tokens=%f)" % (self.eth / 1e18, self.tokens / 1e18)
 
     def dai_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return self.tokens
+        # TODO?
+        return 0
 
     def eth_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return self.eth
+        # TODO?
+        return 0
 
     def lp_token_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
 class Withdraw(Action, NamedTuple):
@@ -139,12 +114,15 @@ class Withdraw(Action, NamedTuple):
         return "Withdraw(eth=%f, tokens=%f)" % (self.eth / 1e18, self.tokens / 1e18)
 
     def dai_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return -1 * self.tokens
+        # TODO?
+        return 0
 
     def eth_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return -1 * self.eth
+        # TODO?
+        return 0
 
     def lp_token_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
 class LPTokenMint(Action, NamedTuple):
@@ -155,13 +133,16 @@ class LPTokenMint(Action, NamedTuple):
         return "LPTokenMint(tokens=%f, percentage=%f)" % (self.tokens / 1e18, self.percentage)
 
     def dai_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
     def eth_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
     def lp_token_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return self.tokens
+        # TODO?
+        return 0
 
 class LPTokenBurn(Action, NamedTuple):
     tokens: int
@@ -171,10 +152,13 @@ class LPTokenBurn(Action, NamedTuple):
         return "LPTokenBurn(tokens=%f, percentage=%f)" % (self.tokens / 1e18, self.percentage)
 
     def dai_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
     def eth_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
+        # TODO?
         return 0
 
     def lp_token_delta(self, _state: StateVariables, _params: SystemParameters) -> int:
-        return -1 * self.tokens
+        # TODO?
+        return 0
