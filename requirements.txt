@@ -1,0 +1,6 @@
+ radcad==0.9.0
+ jupyter==1.0.0
+ numpy==1.22.4
+ cadcad==0.4.28
+ pandas==1.4.2
+ matplotlib==3.5.2
