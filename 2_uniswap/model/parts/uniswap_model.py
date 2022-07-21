@@ -18,21 +18,17 @@ class SignalInput(TypedDict):
     lp_token_delta: int
     price_ratio: float
 
-def __event_at_t_as_dict__(events: DataFrame, t: int) -> Event:
-    return events[t:t+1].to_dict(orient='index')[t]
-
 def decode_action(
     params: SystemParameters, 
     _substep: int, 
     _state_history: List[StateVariables], 
     state: StateVariables
 ) -> Dict[str, Any]:
-    action = Action.from_event(
-        __event_at_t_as_dict__(
-            params['uniswap_events'],
-            state['timestep']
-        )
-    )
+    t = state['timestep']
+    events = params['uniswap_events']
+    event: Event = events[t:t+1].to_dict(orient='index')[t]
+    action = Action.from_event(event)
+
     deltas = { 
         'dai_delta': action.dai_delta(state, params),
         'eth_delta': action.eth_delta(state, params),
